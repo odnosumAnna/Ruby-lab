@@ -56,3 +56,80 @@ class LongestCommonSubsequence
     lcs_result
   end
 end
+
+# Тести для LCS
+require 'rspec'
+
+RSpec.describe LongestCommonSubsequence do
+  it "повинен знайти LCS для 'ABCD' і 'ACDF'" do
+    sequence = LongestCommonSubsequence.find_lcs("ABCD", "ACDF")
+    expect(sequence).to eq("ACD")
+  end
+
+  it "повинен знайти LCS для кількох рядків 'abcde', 'ace', 'acde'" do
+    sequence = LongestCommonSubsequence.find_multi_lcs("abcde", "ace", "acde")
+    expect(sequence).to eq("ace")
+  end
+
+  it "повинен знайти LCS для порожніх рядків" do
+    sequence = LongestCommonSubsequence.find_lcs("", "")
+    expect(sequence).to eq("")
+  end
+
+  it "повинен знайти LCS для 'ABC' і 'DEF'" do
+    sequence = LongestCommonSubsequence.find_lcs("ABC", "DEF")
+    expect(sequence).to eq("")
+  end
+
+  it "повинен знайти LCS для одного рядка" do
+    sequence = LongestCommonSubsequence.find_multi_lcs("ABC")
+    expect(sequence).to eq("ABC")
+  end
+
+  it "повинен викидати помилку, якщо параметри не рядки" do
+    expect { LongestCommonSubsequence.find_lcs("ABCD", 123) }.to raise_error(ArgumentError, 'Параметри повинні бути рядками')
+    expect { LongestCommonSubsequence.find_multi_lcs("abcde", "ace", 45) }.to raise_error(ArgumentError, 'Усі параметри повинні бути рядками')
+  end
+end
+
+# Виконання тестів, якщо файл запускається без параметрів
+if __FILE__ == $0
+  # Приклад використання
+  puts "Приклад 1:"
+  lcs_string = LongestCommonSubsequence.find_lcs("ABCD", "ACDF")
+  puts "LCS: '#{lcs_string}'"
+
+  puts "\nПриклад 2:"
+  lcs_string = LongestCommonSubsequence.find_lcs("AGGTAB", "GXTXAYB")
+  puts "LCS: '#{lcs_string}'"
+
+  puts "\nПриклад 3:"
+  lcs_string = LongestCommonSubsequence.find_multi_lcs("abcde", "ace", "acde")
+  puts "LCS для кількох рядків: '#{lcs_string}'"
+
+  puts "\nПриклад 4:"
+  lcs_string = LongestCommonSubsequence.find_lcs("ABC", "DEF")
+  puts "LCS: '#{lcs_string}'"
+
+  puts "\nПриклад 5: Перевірка на один рядок"
+  lcs_string = LongestCommonSubsequence.find_multi_lcs("ABC")
+  puts "LCS для одного рядка: '#{lcs_string}'"
+
+  puts "\nПриклад 6:"
+  # Приклад неправильних типів
+  begin
+    LongestCommonSubsequence.find_lcs("ABCD", 123)
+  rescue ArgumentError => e
+    puts "Помилка: #{e.message}"
+  end
+
+  begin
+    LongestCommonSubsequence.find_multi_lcs("abcde", "ace", 45)
+  rescue ArgumentError => e
+    puts "Помилка: #{e.message}"
+  end
+
+  # Запуск тестів
+  puts "\nЗапуск тестів"
+  RSpec::Core::Runner.run([$__FILE__])
+end
